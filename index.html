@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monnelo Atelier - Crochet Products</title>
+    
+    <style>
+        /* Pastel Green and Red Color Theme */
+        :root {
+            --primary-color: #A8E6CF; /* Pastel Green */
+            --secondary-color: #FF6666; /* Pastel Red/Coral */
+            --text-color: #333;
+            --light-bg: #fdfdff;
+            --shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 500;
+        }
+
+        .brand-name {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4a4a4a;
+            letter-spacing: 1px;
+        }
+
+        nav button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        nav button:hover {
+            background-color: #FF8F8F;
+        }
+
+        /* --- Main Content Layout --- */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 30px auto;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .products-section {
+            flex: 3;
+        }
+
+        .sidebar {
+            flex: 1.5;
+            padding: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            height: fit-content;
+            position: sticky;
+            top: 85px; 
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            color: var(--secondary-color);
+        }
+
+        /* --- Product Cards --- */
+        .product-card {
+            background-color: white;
+            border: 1px solid #eee;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .product-card h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .product-options label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .product-options select, .product-options input[type="number"], .product-options textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .add-to-cart {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            margin-top: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .add-to-cart:hover {
+            background-color: #7FE5C4;
+        }
+
+        /* --- Cart & Checkout --- */
+        #cart-items {
+            list-style: none;
+            padding: 0;
+        }
+
+        #cart-items li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95em;
+        }
+        
+        .remove-item {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .checkout-total {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .checkout-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* --- Modal (Checkout) --- */
+        #checkout-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-modal:hover, .close-modal:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .modal-content label {
+            font-weight: bold;
+        }
+        
+        .modal-content input, .modal-content textarea {
+            margin: 8px 0 15px 0;
+        }
+
+        #place-order-submit {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        /* --- Order Status Checker --- */
+        .order-status {
+            padding: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        /* --- Cute Pop-up --- */
+        #success-popup {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 20px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            z-index: 2000;
+            animation: fadeInOut 5s forwards;
+            font-weight: bold;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(20px); }
+        }
+        
+        /* --- Chat Box Placeholder --- */
+        #chat-placeholder {
+            padding: 15px;
+            background-color: #fff3c9;
+            border: 1px solid #ffd86b;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-name">Monnelo Atelier 🌷</div>
+        <nav>
+            <button onclick="openCheckoutModal()">🛒 Cart (<span id="cart-count">0</span>) - <span id="cart-total-nav">0.00 ₱</span></button>
+            <button onclick="alert('Admin View functionality requires a backend server and login security.')">🔑 Admin View</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <div class="products-section">
+            <h2>Our Crochet Products</h2>
+            
+            <div class="product-card" data-name="Flower Bouquet">
+                <h3>Flower Bouquet (170₱ - 550₱)</h3>
+                <p>Choose your size and palette for a custom floral piece.</p>
+                <div class="product-options">
+                    <label for="bouquet-size">Size Option:</label>
+                    <select id="bouquet-size" class="product-option">
+                        <option value="170" data-label="Small (1-3 flowers)">Small (1-3 flowers) - 170₱</option>
+                        <option value="360" data-label="Medium (4-6 flowers)">Medium (4-6 flowers) - 360₱</option>
+                        <option value="550" data-label="Large (7-11 flowers)">Large (7-11 flowers) - 550₱</option>
+                    </select>
+
+                    <label for="bouquet-palette">Color Palette Option:</label>
+                    <select id="bouquet-palette" class="product-option">
+                        <option data-label="Monochromatic">Monochromatic Color Palette</option>
+                        <option data-label="Analogous">Analogous Color Palette</option>
+                        <option data-label="Complementary">Complementary Color Palette</option>
+                        <option data-label="Triadic">Triadic Color Palette</option>
+                        <option data-label="Split-Complementary">Split-Complementary Color Palette</option>
+                        <option data-label="Tetradic">Tetradic Color Palette</option>
+                        <option data-label="Square">Square Color Palette</option>
+                    </select>
+                </div>
+                <button class="add-to-cart" data-product-id="P001" onclick="addToCart(this)">Add Bouquet to Cart</button>
+            </div>
+
+            <div class="product-card" data-name="Crochet Keychain">
+                <h3>Crochet Keychains (35₱ - 70₱)</h3>
+                               <p>Perfect little handmade gifts for keys or bags.</p>
+                <div class="product-options">
+                    <label for="keychain-type">Keychain Type Option:</label>
+                    <select id="keychain-type" class="product-option">
+                        <option value="35" data-label="Flower Keychain">Flower Keychain (35₱)</option>
+                        <option value="45" data-label="Ribbon Keychain">Ribbon Keychain (45₱)</option>
+                        <option value="70" data-label="Small Animal Keychain">Small Animal Keychain (70₱)</option>
+                    </select>
+                </div>
+                <button class="add-to-cart" data-product-id="P002" onclick="addToCart(this)">Add Keychain to Cart</button>
+            </div>
+            
+            <div class="product-card" data-name="Amigurumi">
+                <h3>Amigurumi (350₱ - 700₱)</h3>
+                                <p>Soft, huggable, stuffed crochet toys.</p>
+                <div class="product-options">
+                    <label for="amigurumi-kind">Amigurumi Kind Option:</label>
+                    <select id="amigurumi-kind" class="product-option">
+                        <option value="350" data-label="Small Doll">Small Doll (350₱)</option>
+                        <option value="500" data-label="Medium Animal">Medium Animal (500₱)</option>
+                        <option value="700" data-label="Large Character">Large Character (700₱)</option>
+                    </select>
+                </div>
+                <button class="add-to-cart" data-product-id="P003" onclick="addToCart(this)">Add Amigurumi to Cart</button>
+            </div>
+
+            <div class="product-card" data-name="Custom Order">
+                <h3>Customization Request</h3>
+                <p>Have an idea? Let us create a unique piece just for you!</p>
+                <div class="product-options">
+                    <label for="custom-details">Details of your custom design:</label>
+                    <textarea id="custom-details" placeholder="Describe your custom item (e.g., specific flower, unique animal, size...)" rows="3"></textarea>
+                    <p style="font-size: 0.9em; color: gray;">Adding this to cart is a Quote Request (100₱). Final price will be confirmed via chat.</p>
+                </div>
+                <button class="add-to-cart" data-product-id="P004" data-custom-price="100" onclick="addToCart(this)">Request Custom Quote (100₱)</button>
+            </div>
+
+        </div>
+
+        <div class="sidebar">
+ 
+            <h2>🛒 Shopping Cart</h2>
+            <ul id="cart-items">
+                <li id="empty-cart-message">Your cart is empty.</li>
+            </ul>
+            <div class="checkout-total">
+                <span>Total:</span>
+                <span id="cart-total">0.00 ₱</span>
+            </div>
+            <button class="checkout-button" onclick="openCheckoutModal()">Proceed to Checkout</button>
+            
+            <div id="chat-placeholder">
+                <p>💬 Chat with Monnelo Atelier</p>
+                <p style="font-size: 0.9em;">(Actual live chat requires a server. Message us after checking out!)</p>
+            </div>
+            
+            <div class="order-status">
+                <h2>📦 Check Order Progress</h2>
+                <input type="text" id="order-id-input" placeholder="Enter Order ID (e.g., MA-123)">
+                <button class="add-to-cart" onclick="checkOrderStatus()">Check Status</button>
+                <p id="status-result" style="margin-top: 10px; font-weight: bold;"></p>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="checkout-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCheckoutModal()">×</span>
+            <h3>Customer Information & Checkout</h3>
+            
+            <form id="checkout-form" action="https://formsubmit.co/jolancillo@gmail.com" method="POST" onsubmit="return finalizeOrder(event)">
+                
+                <input type="hidden" name="_subject" value="NEW MONNELO ATELIER CROCHET ORDER">
+                <input type="hidden" name="_autoresponse" value="Thank you for your Monnelo Atelier order! We've received your request and will manually confirm availability and final payment details shortly. Your estimated Order ID is: [Order ID will be here]">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_next" value=""> <input type="hidden" name="Order ID" id="order-id-field">
+                <input type="hidden" name="Order Total" id="order-total-field">
+                <input type="hidden" name="Order Items List" id="order-items-field">
+                
+                <label for="cust-name">Name:</label>
+                <input type="text" id="cust-name" name="Customer Name" required>
+                
+                <label for="cust-contact">Contact Number:</label>
+                <input type="tel" id="cust-contact" name="Contact Number" required>
+
+                <label for="cust-address">Delivery Address:</label>
+                <input type="text" id="cust-address" name="Delivery Address" required>
+
+                <label for="order-notes">Order Notes (e.g., special request):</label>
+                <textarea id="order-notes" name="Order Notes" rows="3"></textarea>
+                
+                <div class="checkout-total">
+                    <span>Final Total:</span>
+                    <span id="modal-total">0.00 ₱</span>
+                </div>
+
+                <button type="submit" id="place-order-submit">Place Order & Send Email Request</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="success-popup">
+        ✨ Order Successful! We sent the details to Monnelo Atelier's email. 🌷
+    </div>
+
+    <script>
+        const PRODUCTS = {
+            'P001': { name: 'Flower Bouquet', priceSource: 'bouquet-size', optionSource: 'bouquet-palette' },
+            'P002': { name: 'Crochet Keychain', priceSource: 'keychain-type' },
+            'P003': { name: 'Amigurumi', priceSource: 'amigurumi-kind' },
+            'P004': { name: 'Custom Order', customPrice: 100 }
+        };
+
+        let cart = [];
+
+        // --- Core Cart Functions ---
+
+        function addToCart(button) {
+            const productId = button.getAttribute('data-product-id');
+            const productInfo = PRODUCTS[productId];
+            const productCard = button.closest('.product-card');
+            let price = 0;
+            let details = {};
+            let optionLabel = '';
+
+            if (productId === 'P004') {
+                price = productInfo.customPrice;
+                const customDetails = productCard.querySelector('#custom-details').value;
+                optionLabel = customDetails ? customDetails.substring(0, 30) + '...' : 'No details';
+                details = { description: optionLabel };
+            } else {
+                const priceSelect = productCard.querySelector(`#${productInfo.priceSource}`);
+                if (!priceSelect) return alert('Error finding price option.');
+                
+                price = parseFloat(priceSelect.value);
+                details[productInfo.priceSource] = priceSelect.options[priceSelect.selectedIndex].getAttribute('data-label') || priceSelect.options[priceSelect.selectedIndex].textContent;
+
+                if (productInfo.optionSource) {
+                    const optionSelect = productCard.querySelector(`#${productInfo.optionSource}`);
+                    if (optionSelect) {
+                        details[productInfo.optionSource] = optionSelect.options[optionSelect.selectedIndex].getAttribute('data-label') || optionSelect.options[optionSelect.selectedIndex].textContent;
+                    }
+                }
+            }
+
+            if (price > 0) {
+                const item = {
+                    id: Date.now() + Math.random(),
+                    productId: productId,
+                    name: productInfo.name,
+                    price: price,
+                    details: details
+                };
+
+                cart.push(item);
+                renderCart();
+            } else {
+                alert('Please select a valid product option.');
+            }
+        }
+
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            renderCart();
+        }
+
+        function calculateTotal() {
+            return cart.reduce((total, item) => total + item.price, 0);
+        }
+
+        function renderCart() {
+            const cartList = document.getElementById('cart-items');
+            const total = calculateTotal();
+            
+            document.getElementById('cart-total').textContent = `${total.toFixed(2)} ₱`;
+            document.getElementById('cart-total-nav').textContent = `${total.toFixed(2)} ₱`;
+            document.getElementById('modal-total').textContent = `${total.toFixed(2)} ₱`;
+            document.getElementById('cart-count').textContent = cart.length;
+            
+            cartList.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartList.innerHTML = '<li id="empty-cart-message">Your cart is empty.</li>';
+                document.querySelector('.checkout-button').disabled = true;
+            } else {
+                cart.forEach(item => {
+                    const li = document.createElement('li');
+                    
+                    const detailValues = Object.values(item.details).join(' | ');
+                    const detailString = ` [${detailValues}]`;
+                    
+                    li.innerHTML = `
+                        <span style="max-width: 60%;">${item.name} ${detailString}</span>
+                        <span>
+                            ${item.price.toFixed(2)} ₱
+                            <button class="remove-item" onclick="removeFromCart(${item.id})">x</button>
+                        </span>
+                    `;
+                    cartList.appendChild(li);
+                });
+                document.querySelector('.checkout-button').disabled = false;
+            }
+        }
+
+        // --- Checkout & FormSubmit Functions ---
+        
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add products before checking out.');
+                return;
+            }
+            document.getElementById('checkout-modal').style.display = 'block';
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').style.display = 'none';
+        }
+
+        // NEW FUNCTION: Prepares data and submits the form
+        function finalizeOrder(event) {
+            // This prevents default form submission for a moment so we can inject data
+            event.preventDefault(); 
+            
+            const name = document.getElementById('cust-name').value;
+            const contact = document.getElementById('cust-contact').value;
+            const address = document.getElementById('cust-address').value;
+
+            if (!name || !contact || !address) {
+                alert('Please fill in your Name, Contact Number, and Delivery Address.');
+                return false;
+            }
+
+            const orderId = `MA-${Math.floor(Math.random() * 900) + 100}`;
+            const orderTotal = calculateTotal();
+            
+            // Format cart items into a clean, readable string for the email body
+            const itemSummary = cart.map(item => {
+                const details = Object.values(item.details).join(', ');
+                return `${item.name} (${details}) - ${item.price.toFixed(2)} ₱`;
+            }).join('; ');
+
+            // 1. Inject data into hidden form fields for email submission
+            document.getElementById('order-id-field').value = orderId;
+            document.getElementById('order-total-field').value = `${orderTotal.toFixed(2)} ₱`;
+            document.getElementById('order-items-field').value = itemSummary;
+            
+            // 2. Set the success redirection URL to handle the visual feedback after external form submission
+            const successUrl = window.location.href.split('?')[0] + '?orderSuccess=true&orderID=' + orderId;
+            document.querySelector('#checkout-form input[name="_next"]').value = successUrl;
+
+            // 3. Submit the form to FormSubmit
+            document.getElementById('checkout-form').submit();
+
+            // Note: Cleanup (cart reset, modal close) happens in the checkUrlForSuccess function 
+            // after the page reloads from the successful form submission.
+            return true;
+        }
+
+
+        // NEW FUNCTION: Checks the URL after FormSubmit redirects back to our page
+        function checkUrlForSuccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('orderSuccess') === 'true') {
+                const orderId = urlParams.get('orderID');
+                
+                // Show Success Pop-up (Visual Feedback)
+                const popup = document.getElementById('success-popup');
+                popup.style.display = 'block';
+                setTimeout(() => { popup.style.display = 'none'; }, 4500); 
+
+                // Reset Customer's View (Cart, Status Checker)
+                cart = [];
+                renderCart();
+                document.getElementById('order-id-input').value = orderId;
+                document.getElementById('status-result').innerHTML = `Order **${orderId}** placed! Status: **Email Sent/Processing**.`;
+                document.getElementById('status-result').style.color = 'blue';
+                
+                // Clean the URL so a refresh doesn't trigger the message again
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        // --- Order Status Checker (Unchanged) ---
+        
+        function checkOrderStatus() {
+            const orderId = document.getElementById('order-id-input').value.trim().toUpperCase();
+            const statusResult = document.getElementById('status-result');
+            
+            if (orderId === '') {
+                statusResult.textContent = 'Please enter an Order ID.';
+                statusResult.style.color = '#FF6666';
+                return;
+            }
+
+            if (orderId === 'MA-123') {
+                statusResult.innerHTML = `Order **${orderId}** found! <br> Progress: **In Production (70% done)** <br> Estimated Delivery: 3 days.`;
+                statusResult.style.color = 'orange';
+            } else if (orderId === 'MA-999') {
+                statusResult.innerHTML = `Order **${orderId}** found! <br> Progress: **DELIVERED!** <br> Thank you for your purchase!`;
+                statusResult.style.color = 'green';
+            } else if (orderId.startsWith('MA-')) {
+                 statusResult.innerHTML = `Order **${orderId}** found! <br> Progress: **Processing/Email Sent** <br> We'll start production soon.`;
+                 statusResult.style.color = 'blue';
+            } else {
+                statusResult.textContent = `Order ID ${orderId} not found. Please check your ID.`;
+                statusResult.style.color = '#FF6666';
+            }
+        }
+        
+        // --- Initialization ---
+        window.onload = function() {
+            renderCart();
+            checkUrlForSuccess(); // Check for success redirection immediately on load
+        };
+    </script>
+</body>
+</html>
